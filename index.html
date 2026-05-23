@@ -204,7 +204,7 @@
         }
 
         /* ==========================================================================
-           HALAMAN 2: RADICAL ANTI-BLANK LAYER (DYNAMIC INJECTION)
+           HALAMAN 2: CINEMATIC KEN BURNS IMAGE EFFECT (ANTI LAYAR HITAM 100%)
            ========================================================================== */
         #hal-2-video {
             position: relative;
@@ -212,32 +212,33 @@
             height: 100vh;
             min-height: 100vh;
             padding: 0;
-            /* Default base layer adalah GAMBAR UTAMA, jadi mustahil blank hitam */
-            background-image: url('foto-halaman3.png'); 
-            background-position: center;
-            background-size: cover;
             overflow: hidden;
             z-index: 5;
+            background-color: #000; 
         }
 
-        .bg-video {
+        /* Gambar latar belakang utama halaman 2 */
+        .cinematic-bg-image {
             position: absolute;
-            top: 50%;
-            left: 50%;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            min-width: 100%;
-            min-height: 100%;
-            transform: translate(-50%, -50%);
-            object-fit: cover;
+            background-image: url('foto-halaman3.png');
+            background-position: center;
+            background-size: cover;
             z-index: 1;
-            display: block;
-            opacity: 0; /* Default disembunyikan, baru muncul lewat JS jika sukses jalan */
-            transition: opacity 0.5s ease-in-out;
+            transform: scale(1);
         }
 
-        .bg-video.video-ready {
-            opacity: 1; /* Hanya muncul kalau video dipastikan sukses berputar */
+        /* Class untuk memicu pergerakan maju perlahan saat cover dibuka */
+        .cinematic-bg-image.start-zoom {
+            animation: kenBurnsEffect 20s ease-out forwards;
+        }
+
+        @keyframes kenBurnsEffect {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.18); } /* Efek zoom-in sinematik super mulus */
         }
 
         .video-overlay {
@@ -246,7 +247,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.65));
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.65));
             z-index: 2;
         }
 
@@ -254,7 +255,6 @@
             position: relative;
             z-index: 3;
             color: #fff;
-            opacity: 1; 
             padding: 20px;
         }
 
@@ -700,11 +700,12 @@
     </div>
 
     <!-- ==========================================================================
-       HALAMAN 2: CINEMATIC DYNAMIC SECTION (TIDAK ADA TAG VIDEO MANUAL DI SINI)
+       HALAMAN 2: CINEMATIC SECTION (MURNI GAMBAR BERGERAK - BEBAS BLANK HITAM)
        ========================================================================== */ -->
     <section id="hal-2-video">
+        <div class="cinematic-bg-image" id="cinematic-bg"></div>
         <div class="video-overlay"></div>
-        <div class="video-content" id="video-text-container">
+        <div class="video-content">
             <p style="text-transform: uppercase; letter-spacing: 3px;">Pernikahan Agung</p>
             <h1 class="video-mempelai">Elyana & Syahril</h1>
             <p style="letter-spacing: 3px; font-weight: 300;">31 DESEMBER 2026</p>
@@ -717,7 +718,7 @@
     <section id="hal-3-arrum" class="reveal">
         <img class="foto-asli-halaman3" src="foto-halaman3.png" alt="Prewedding Scene">
         <div class="surat-box">
-            <div class="arab" style="font-family: serif; font-weight: bold;">وَمِنْ اٰيٰتِهٖٓ اَنْ خَلَقَ لَكُمْ مِّنْ اَنْفُسِكُمْ اَزْوَاجًا لِّتَسْكُنُوْٓا اِلَيْهَا وَجَعَلَ بَيْنَتُكُمْ مَّوَدَّةً وَّرَحْمَةً ۗاِنَّ فِيْ ذٰلِكَ لَاٰيٰتٍ لِّقَوْمٍ يَّتَفَكَّرُوْنَ</div>
+            <div class="arab" style="font-family: serif; font-weight: bold;">وَمِنْ اٰيٰتِهٖٓ اَنْ خَلَقَ لَكُمْ مِّنْ اَنْفُسِكُمْ اَزْوَاجًا Lِّتَسْكُنُوْٓا اِلَيْهَا وَجَعَلَ بَيْنَتُكُمْ mَّوَدَّةً وَّرَحْمَةً ۗاِنَّ فِيْ ذٰلِكَ لَاٰيٰتٍ Lِّقَوْmٍ يَّتَفَكَّرُوْنَ</div>
             <p>"Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sungguh, pada yang demikian itu benar-benar terdapat tanda-tanda bagi kaum yang berpikir."</p>
             <strong style="color: #d4a373; font-size: 0.95rem;">(QS. Ar-Rum: 21)</strong>
         </div>
@@ -889,7 +890,7 @@
         const audio = document.getElementById('wedding-audio');
         const musicIcon = document.getElementById('music-icon');
         const musicBtn = document.getElementById('music-control');
-        const hal2Section = document.getElementById('hal-2-video');
+        const cinematicBg = document.getElementById('cinematic-bg');
 
         // Parameter Tamu URL Parsing (?to=Nama+Tamu)
         const queryParams = new URLSearchParams(window.location.search);
@@ -899,7 +900,7 @@
             document.getElementById('input-nama').value = namaTamu;
         }
 
-        // Aksi Buka Undangan & Dynamic Injection System
+        // Aksi Buka Undangan & Memicu Animasi Zoom Gambar
         function bukaUndanganAksi() {
             document.getElementById('hal-1-cover').classList.add('cover-slide-up');
             document.body.style.overflow = 'auto'; 
@@ -909,46 +910,8 @@
             // Putar musik utama
             audio.play().catch(err => console.log("Audio ditahan browser"));
             
-            // STRATEGI BARU: Inject video via JS agar tidak merusak rendering halaman
-            const dynamicVideo = document.createElement('video');
-            dynamicVideo.className = 'bg-video';
-            dynamicVideo.loop = true;
-            dynamicVideo.muted = true;
-            dynamicVideo.style.pointerEvents = 'none';
-            dynamicVideo.setAttribute('playsinline', '');
-            dynamicVideo.setAttribute('autoplay', '');
-            dynamicVideo.preload = 'auto';
-            
-            const videoSource = document.createElement('source');
-            videoSource.src = 'opening-background.mp4';
-            videoSource.type = 'video/mp4';
-            dynamicVideo.appendChild(videoSource);
-            
-            // Masukkan ke DOM paling depan di Halaman 2
-            hal2Section.insertBefore(dynamicVideo, hal2Section.firstChild);
-            
-            // Deteksi Real-Time apakah video benar-benar "bernyawa" (bukan frame hitam statis)
-            let videoDarahSehat = false;
-            
-            dynamicVideo.addEventListener('playing', () => {
-                // Beri jeda 150ms untuk memastikan decoding hardware selesai tanpa freeze
-                setTimeout(() => {
-                    if (dynamicVideo.currentTime > 0 && !dynamicVideo.paused) {
-                        videoDarahSehat = true;
-                        dynamicVideo.classList.add('video-ready'); // Tampilkan video (fade-in)
-                        console.log("Video berhasil dirender sempurna oleh Perangkat HP.");
-                    }
-                }, 150);
-            });
-
-            // Pengaman Waktu (Safety Timeout): Jika dalam 1.2 detik video gagal/ngadat/stuck hitam,
-            // Hancurkan objek video dan paksa halaman menggunakan base layer image secara murni.
-            setTimeout(() => {
-                if (!videoDarahSehat) {
-                    console.log("Sistem mendeteksi video macet/hitam. Menghapus objek video.");
-                    dynamicVideo.remove(); // Hapus video total dari memori DOM HP
-                }
-            }, 1200);
+            // Suntikkan class CSS untuk memulai pergerakan maju gambar secara sinematik
+            cinematicBg.classList.add('start-zoom');
         }
 
         function toggleAudio() {
@@ -974,7 +937,7 @@
             scrollObserver.observe(section);
         });
 
-        // Countdown Timer Engine
+        // Countdown Timer Engine (Target: 31 Desember 2026)
         const targetDate = new Date("Dec 31, 2026 08:00:00").getTime();
         setInterval(function() {
             const now = new Date().getTime();
