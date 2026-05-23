@@ -13,7 +13,7 @@
 
     <style>
         /* ==========================================================================
-           1. GLOBAL STYLES & BACKGROUND FIX (ANTI-ZOOM & FIXED PARALLAX)
+           1. GLOBAL STYLES & BACKGROUND FIXED (ANTI-ZOOM & LOCK POSITION)
            ========================================================================== */
         * {
             margin: 0;
@@ -23,18 +23,18 @@
         
         body {
             font-family: 'Poppins', sans-serif;
-            /* Mengunci latar belakang agar benar-benar diam saat di-scroll (fixed) */
+            /* Memastikan master background benar-benar diam dan tidak ikut bergerak saat scroll */
             background-image: url('master-background.png');
             background-position: center top;
             background-repeat: repeat-y;
             background-attachment: fixed;
-            background-size: 100% auto; /* Mencegah gambar terpotong/zoom paksa di mobile */
+            background-size: 100% auto; 
             color: #4a4a4a;
             overflow: hidden; /* Dikunci sebelum klik Buka Undangan */
             scroll-behavior: smooth;
         }
 
-        /* Optimasi Desktop / PC: Memastikan background proporsional tanpa zoom besar-besaran */
+        /* Optimasi Desktop / PC: Mencegah distorsi dan menjaga latar belakang tetap statis */
         @media (min-width: 1024px) {
             body {
                 background-size: contain;
@@ -686,11 +686,11 @@
     </div>
 
     <!-- ==========================================================================
-       HALAMAN 2: CINEMATIC BACKGROUND VIDEO
+       HALAMAN 2: CINEMATIC BACKGROUND VIDEO (OPENING-BACKGROUND.MP4)
        ========================================================================== */ -->
     <section id="hal-2-video">
         <video id="cinematic-video" class="bg-video" loop muted playsinline autoplay>
-            <source src="background-opening.mp4" type="video/mp4">
+            <source src="opening-background.mp4" type="video/mp4">
         </video>
         <div class="video-overlay"></div>
         <div class="video-content" id="video-text-container">
@@ -706,7 +706,7 @@
     <section id="hal-3-arrum" class="reveal">
         <img class="foto-asli-halaman3" src="foto-halaman3.png" alt="Prewedding Scene">
         <div class="surat-box">
-            <div class="arab" style="font-family: serif; font-weight: bold;">وَمِنْ اٰيٰتِهٖٓ اَنْ خَلَقَ لَكُمْ مِّنْ اَنْفُسِكُمْ اَzْوَاجًا لِّتَسْكُنُوْٓا اِلَيْهَا وَجَعَلَ بَيْنَتُكُمْ mَّوَدَّةً وَّرَحْمَةً ۗاِنَّ فِيْ ذٰلِكَ لَاٰيٰتٍ لِّقَوْمٍ يَّتَفَكَّرُوْنَ</div>
+            <div class="arab" style="font-family: serif; font-weight: bold;">وَمِنْ اٰيٰتِهٖٓ اَنْ خَلَقَ لَكُمْ مِّنْ اَنْفُسِكُمْ اَzْوَاجًا Lِّتَسْكُنُوْٓا اِلَيْهَا وَجَعَلَ بَيْنَتُكُمْ mَّوَدَّةً وَّرَحْمَةً ۗاِنَّ فِيْ ذٰلِكَ لَاٰيٰتٍ Lِّقَوْمٍ يَّتَفَكَّرُوْنَ</div>
             <p>"Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sungguh, pada yang demikian itu benar-benar terdapat tanda-tanda bagi kaum yang berpikir."</p>
             <strong style="color: #d4a373; font-size: 0.95rem;">(QS. Ar-Rum: 21)</strong>
         </div>
@@ -865,7 +865,7 @@
     <section id="hal-9-closing">
         <div class="reveal">
             <p>Merupakan suatu kehormatan dan kebahagiaan yang mendalam bagi kami,<br>apabila Bapak/Ibu/Saudara/i berkenan hadir memberikan doa restu.</p>
-            <h2 style="margin: 25px 0;">Terima Kasih</h2>
+            <h2>Terima Kasih</h2>
             <p style="font-size: 1.3rem; font-family: 'Alex Brush', cursive; color: #faedcd;">Kami Yang Berbahagia,</p>
             <h3 style="font-weight: 400; letter-spacing: 1px;">Elyana & Syahril</h3>
         </div>
