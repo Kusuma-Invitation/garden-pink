@@ -204,17 +204,20 @@
         }
 
         /* ==========================================================================
-           HALAMAN 2: CINEMATIC VIDEO OPENING (FIX FOR MOBILE VIDEO BLANK)
+           HALAMAN 2: FIX ANTI BLANK HITAM (HYBRID BACKUP LAYER)
            ========================================================================== */
         #hal-2-video {
             position: relative;
             width: 100%;
-            height: 100vh; /* Paksa tinggi penuh layar */
+            height: 100vh;
             min-height: 100vh;
             padding: 0;
-            background: #000; /* Warna dasar hitam jika video sedang memuat */
+            /* Gambar cadangan langsung terpasang di base layer CSS halaman 2 */
+            background-image: url('foto-halaman3.png'); 
+            background-position: center;
+            background-size: cover;
             overflow: hidden;
-            z-index: 5; /* Memastikan berada di atas background master agar tidak transparan */
+            z-index: 5;
         }
 
         .bg-video {
@@ -226,7 +229,7 @@
             min-width: 100%;
             min-height: 100%;
             transform: translate(-50%, -50%);
-            object-fit: cover; /* Memastikan video memenuhi seluruh area layar */
+            object-fit: cover;
             z-index: 1;
             display: block;
         }
@@ -237,7 +240,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.55);
+            background: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.65));
             z-index: 2;
         }
 
@@ -245,21 +248,18 @@
             position: relative;
             z-index: 3;
             color: #fff;
-            opacity: 0;
-            transform: scale(0.85);
-            transition: all 2s cubic-bezier(0.19, 1, 0.22, 1);
-        }
-
-        .video-content.text-masuk {
-            opacity: 1;
+            /* Perubahan Penting: Default teks langsung muncul (opacity: 1) agar jika video block, teks tidak hilang */
+            opacity: 1; 
             transform: scale(1);
+            transition: all 1s ease-in-out;
+            padding: 20px;
         }
 
         .video-mempelai {
             font-family: 'Alex Brush', cursive;
             font-size: 5.5rem;
             color: #faedcd;
-            text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.6);
             margin: 15px 0;
         }
 
@@ -697,11 +697,11 @@
     </div>
 
     <!-- ==========================================================================
-       HALAMAN 2: CINEMATIC BACKGROUND VIDEO
+       HALAMAN 2: CINEMATIC BACKGROUND VIDEO WITH SAFE CSS HYBRID
        ========================================================================== */ -->
     <section id="hal-2-video">
-        <!-- Menggunakan nama file opening-background.mp4 -->
-        <video id="cinematic-video" class="bg-video" loop muted playsinline autoplay preload="auto">
+        <!-- Menggunakan fallback poster langsung di tag video -->
+        <video id="cinematic-video" class="bg-video" loop muted playsinline autoplay preload="auto" poster="foto-halaman3.png">
             <source src="opening-background.mp4" type="video/mp4">
         </video>
         <div class="video-overlay"></div>
@@ -718,7 +718,7 @@
     <section id="hal-3-arrum" class="reveal">
         <img class="foto-asli-halaman3" src="foto-halaman3.png" alt="Prewedding Scene">
         <div class="surat-box">
-            <div class="arab" style="font-family: serif; font-weight: bold;">وَمِنْ اٰيٰتِهٖٓ اَنْ خَلَقَ لَكُمْ مِّنْ اَنْفُسِكُمْ اَزْوَاجًا لِّتَسْكُنُوْٓا اِلَيْهَا وَجَعَلَ بَيْنَتُكُمْ مَّوَدَّةً وَّرَحْمَةً ۗاِنَّ فِيْ ذٰلِكَ لَاٰيٰتٍ لِّقَوْمٍ يَّتَفَكَّرُوْنَ</div>
+            <div class="arab" style="font-family: serif; font-weight: bold;">وَمِنْ اٰيٰتِهٖٓ اَنْ خَلَقَ لَكُمْ mِّنْ اَنْفُسِكُمْ اَزْوَاجًا لِّتَسْكُنُوْٓا اِلَيْهَا وَجَعَلَ بَيْنَتُكُمْ مَّوَدَّةً وَّرَحْمَةً ۗاِنَّ فِيْ ذٰلِكَ لَاٰيٰتٍ لِّقَوْمٍ يَّتَفَكَّرُوْنَ</div>
             <p>"Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sungguh, pada yang demikian itu benar-benar terdapat tanda-tanda bagi kaum yang berpikir."</p>
             <strong style="color: #d4a373; font-size: 0.95rem;">(QS. Ar-Rum: 21)</strong>
         </div>
@@ -889,7 +889,6 @@
     <script>
         const audio = document.getElementById('wedding-audio');
         const video = document.getElementById('cinematic-video');
-        const textVideo = document.getElementById('video-text-container');
         const musicIcon = document.getElementById('music-icon');
         const musicBtn = document.getElementById('music-control');
 
@@ -911,18 +910,13 @@
             // Putar musik utama
             audio.play().catch(err => console.log("Audio playback ditahan browser"));
             
-            // Trigger Engine untuk memuat video secara paksa pada eksekusi klik user
+            // Trigger Pemutaran Video Secara Aman Tanpa Manipulasi Reload yang dibenci Browser Mobile
             if (video) {
-                video.removeAttribute('muted'); // Hapus atribut muting sementara untuk re-trigger
-                video.muted = true;             // Set kembali ke true agar bypass aturan browser mobile
-                video.load();                   // Memuat ulang file opening-background.mp4
-                
-                let playPromise = video.play();
-                if (playPromise !== undefined) {
-                    playPromise.catch(error => {
-                        console.log("Video playback diblokir browser otomatis:", error);
-                    });
-                }
+                video.play().catch(error => {
+                    console.log("Autoplay video diblokir hardware HP. Sistem mengaktifkan fallback CSS Image.");
+                    // Sembunyikan elemen video yang rusak/blank agar murni menampilkan background foto-halaman3.png
+                    video.style.display = 'none'; 
+                });
             }
         }
 
@@ -934,15 +928,6 @@
                 audio.pause();
                 musicIcon.classList.remove('rotate-music');
             }
-        }
-
-        // Monitoring Durasi Frame Penutup Video
-        if(video) {
-            video.addEventListener('timeupdate', function() {
-                if (video.duration - video.currentTime <= 2.5) {
-                    textVideo.classList.add('text-masuk');
-                }
-            });
         }
 
         // Scroll Animation Observer Engine
