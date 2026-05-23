@@ -13,7 +13,7 @@
 
     <style>
         /* ==========================================================================
-           1. GLOBAL STYLES & BACKGROUND FIXED (ANTI-ZOOM & LOCK POSITION)
+           1. GLOBAL STYLES & TRUE FIXED BACKGROUND (ANTI-SCROLL MOBILE & PC)
            ========================================================================== */
         * {
             margin: 0;
@@ -23,23 +23,32 @@
         
         body {
             font-family: 'Poppins', sans-serif;
-            /* Memastikan master background benar-benar diam dan tidak ikut bergerak saat scroll */
-            background-image: url('master-background.png');
-            background-position: center top;
-            background-repeat: repeat-y;
-            background-attachment: fixed;
-            background-size: 100% auto; 
             color: #4a4a4a;
             overflow: hidden; /* Dikunci sebelum klik Buka Undangan */
             scroll-behavior: smooth;
+            background-color: #fff;
         }
 
-        /* Optimasi Desktop / PC: Mencegah distorsi dan menjaga latar belakang tetap statis */
+        /* Elemen khusus untuk mengunci background utama agar diam total saat di-scroll */
+        .master-fixed-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-image: url('master-background.png');
+            background-position: center top;
+            background-repeat: repeat-y;
+            background-size: 100% auto;
+            z-index: -2; /* Berada di paling bawah */
+            pointer-events: none;
+        }
+
+        /* Optimasi Desktop / PC untuk Background */
         @media (min-width: 1024px) {
-            body {
+            .master-fixed-bg {
                 background-size: contain;
                 background-repeat: repeat;
-                background-attachment: fixed;
                 background-position: center top;
             }
         }
@@ -121,13 +130,8 @@
             background-position: center;
         }
 
-        .bg-half.pria {
-            background-image: url('foto-putra.png');
-        }
-
-        .bg-half.wanita {
-            background-image: url('foto-putri.png');
-        }
+        .bg-half.pria { background-image: url('foto-putra.png'); }
+        .bg-half.wanita { background-image: url('foto-putri.png'); }
 
         .cover-overlay {
             position: absolute;
@@ -188,12 +192,6 @@
             animation: pulseBtn 2s infinite;
         }
 
-        .btn-open:hover {
-            background-color: #fff;
-            color: #d4a373;
-            transform: scale(1.05);
-        }
-
         @keyframes fadeInZoom {
             0% { opacity: 0; transform: scale(0.9); }
             100% { opacity: 1; transform: scale(1); }
@@ -206,11 +204,12 @@
         }
 
         /* ==========================================================================
-           HALAMAN 2: CINEMATIC VIDEO OPENING
+           HALAMAN 2: CINEMATIC VIDEO OPENING (FORCE LAYER)
            ========================================================================== */
         #hal-2-video {
             padding: 0;
             background: #000;
+            z-index: 5; /* Memastikan berada di atas background master agar tidak transparan */
         }
 
         .bg-video {
@@ -257,7 +256,7 @@
         }
 
         /* ==========================================================================
-           HALAMAN 3: AR-RUM (FOTO NATURAL APA ADANYA)
+           HALAMAN 3: AR-RUM
            ========================================================================== */
         #hal-3-arrum {
             background: linear-gradient(rgba(255,255,255,0.75), rgba(255,255,255,0.75));
@@ -292,7 +291,7 @@
         }
 
         /* ==========================================================================
-           HALAMAN 4: PROFIL MEMPELAI (FOTO NATURAL APA ADANYA)
+           HALAMAN 4: PROFIL MEMPELAI
            ========================================================================== */
         #hal-4-profil {
             background: transparent;
@@ -608,6 +607,7 @@
             background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)), 
                         url('master-background.png') center top/cover no-repeat;
             color: #fff;
+            z-index: 5;
         }
 
         @media (min-width: 1024px) {
@@ -656,6 +656,9 @@
 </head>
 <body>
 
+    <!-- ELEMEN BACKGROUND UTAMA YANG DIKUNCI DIAM (FIXED LAYER) -->
+    <div class="master-fixed-bg"></div>
+
     <!-- AUDIO CORE -->
     <audio id="wedding-audio" loop preload="auto">
         <source src="musik.mp3" type="audio/mp3">
@@ -686,11 +689,12 @@
     </div>
 
     <!-- ==========================================================================
-       HALAMAN 2: CINEMATIC BACKGROUND VIDEO (OPENING-BACKGROUND.MP4)
+       HALAMAN 2: CINEMATIC BACKGROUND VIDEO
        ========================================================================== */ -->
     <section id="hal-2-video">
-        <video id="cinematic-video" class="bg-video" loop muted playsinline autoplay>
-            <source src="opening-background.mp4" type="video/mp4">
+        <!-- Atribut ditambahkan lengkap demi kompatibilitas browser mobile -->
+        <video id="cinematic-video" class="bg-video" loop muted playsinline autoplay preload="auto">
+            <source src="background-opening.mp4" type="video/mp4">
         </video>
         <div class="video-overlay"></div>
         <div class="video-content" id="video-text-container">
@@ -701,19 +705,19 @@
     </section>
 
     <!-- ==========================================================================
-       HALAMAN 3: AR-RUM (FOTO NATURAL APA ADANYA)
+       HALAMAN 3: AR-RUM
        ========================================================================== */ -->
     <section id="hal-3-arrum" class="reveal">
         <img class="foto-asli-halaman3" src="foto-halaman3.png" alt="Prewedding Scene">
         <div class="surat-box">
-            <div class="arab" style="font-family: serif; font-weight: bold;">وَمِنْ اٰيٰتِهٖٓ اَنْ خَلَقَ لَكُمْ مِّنْ اَنْفُسِكُمْ اَzْوَاجًا Lِّتَسْكُنُوْٓا اِلَيْهَا وَجَعَلَ بَيْنَتُكُمْ mَّوَدَّةً وَّرَحْمَةً ۗاِنَّ فِيْ ذٰلِكَ لَاٰيٰتٍ Lِّقَوْمٍ يَّتَفَكَّرُوْنَ</div>
+            <div class="arab" style="font-family: serif; font-weight: bold;">وَمِنْ اٰيٰتِهٖٓ اَنْ خَلَقَ لَكُمْ mِّنْ اَنْفُسِكُمْ اَzْوَاجًا Lِّتَسْكُنُوْٓا اِلَيْهَا وَجَعَلَ بَيْنَتُكُمْ mَّوَدَّةً وَّرَحْمَةً ۗاِنَّ فِيْ ذٰلِكَ لَاٰيٰتٍ Lِّقَوْmٍ يَّتَفَكَّرُوْنَ</div>
             <p>"Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sungguh, pada yang demikian itu benar-benar terdapat tanda-tanda bagi kaum yang berpikir."</p>
             <strong style="color: #d4a373; font-size: 0.95rem;">(QS. Ar-Rum: 21)</strong>
         </div>
     </section>
 
     <!-- ==========================================================================
-       HALAMAN 4: PROFIL MEMPELAI (FOTO NATURAL APA ADANYA)
+       HALAMAN 4: PROFIL MEMPELAI
        ========================================================================== */ -->
     <section id="hal-4-profil" class="reveal">
         <div class="pink-container">
@@ -889,18 +893,22 @@
             document.getElementById('input-nama').value = namaTamu;
         }
 
-        // Aksi Buka Undangan & Pemutaran Video/Audio Paksa
+        // Aksi Buka Undangan & Pemutaran Video/Audio Paksa (Mengatasi Bug Mobile)
         function bukaUndanganAksi() {
             document.getElementById('hal-1-cover').classList.add('cover-slide-up');
             document.body.style.overflow = 'auto'; 
             musicBtn.style.display = 'flex';
             musicIcon.classList.add('rotate-music');
             
+            // Putar musik utama
             audio.play().catch(err => console.log("Audio playback ditahan browser"));
             
+            // Trigger Engine untuk memuat video secara paksa pada eksekusi klik user
             if (video) {
-                video.muted = true;
-                video.currentTime = 0;
+                video.removeAttribute('muted'); // Hapus atribut muting sementara untuk re-trigger
+                video.muted = true;             // Set kembali ke true agar bypass aturan browser mobile
+                video.load();                   // Muat ulang source file video
+                
                 let playPromise = video.play();
                 if (playPromise !== undefined) {
                     playPromise.catch(error => {
