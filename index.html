@@ -233,27 +233,33 @@
             z-index: 2;
         }
 
-        .video-content {
-            position: relative;
-            z-index: 3;
-            color: #fff;
-            opacity: 0;
-            transform: scale(0.85);
-            transition: all 2s cubic-bezier(0.19, 1, 0.22, 1);
-        }
+.video-content {
+    position: relative;
+    z-index: 3;
+    /* Mengubah warna teks bawaan (Spesial Pernikahan & Tanggal) menjadi hitam */
+    color: #000000; 
+    font-weight: 600;
+    /* Memberikan bayangan putih tipis agar teks hitam tidak tenggelam saat video gelap */
+    text-shadow: 1px 1px 3px rgba(255,255,255,0.5);
+    opacity: 0;
+    transform: scale(0.85);
+    transition: all 2s cubic-bezier(0.19, 1, 0.22, 1);
+}
 
-        .video-content.text-masuk {
-            opacity: 1;
-            transform: scale(1);
-        }
+.video-content.text-masuk {
+    opacity: 1;
+    transform: scale(1);
+}
 
-        .video-mempelai {
-            font-family: 'Alex Brush', cursive;
-            font-size: 4.5rem;
-            color: #faedcd;
-            text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
-            margin: 15px 0;
-        }
+.video-mempelai {
+    font-family: 'Alex Brush', cursive;
+    font-size: 2.5rem;
+    /* Nama mempelai tetap aman menggunakan warna krem pilihanmu */
+    color: #faedcd;
+    /* Bayangan teks hitam yang lebih tebal khusus untuk nama mempelai agar kontras */
+    text-shadow: 2px 2px 12px rgba(0,0,0,0.7), 0px 0px 8px rgba(0,0,0,0.5);
+    margin: 15px 0;
+}
 
         /* ==========================================================================
            HALAMAN 3: AR-RUM
@@ -692,12 +698,10 @@
        HALAMAN 2: CINEMATIC BACKGROUND VIDEO
        ========================================================================== */ -->
 <section id="hal-2-video">
-    <video id="cinematic-video" class="bg-video" loop muted playsinline preload="auto">
+    <!-- Kata 'loop' sudah dihapus dari tag video di bawah ini -->
+    <video id="cinematic-video" class="bg-video" muted playsinline preload="auto">
         <source src="https://raw.githubusercontent.com/Kusuma-Invitation/garden-pink/main/opening-background%20(1).mp4" type="video/mp4">
     </video>
-    
-    <!-- Lapisan hitam dihapus dari sini -->
-
     <div class="video-content" id="video-text-container">
         <p>Spesial Pernikahan</p>
         <h1 class="video-mempelai">Elyana & Syahril</h1>
