@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Undangan Digital Pernikahan - Elyana & Syahril</title>
+    
+    <!-- Google Fonts & Font Awesome Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* ==========================================================================
+           1. GLOBAL STYLES & ANIMATIONS CONFIGURATION
+           ========================================================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: url('master-background.png') center/cover no-repeat fixed;
+            color: #4a4a4a;
+            overflow: hidden; /* Dikunci sebelum klik Buka Undangan */
+            scroll-behavior: smooth;
+        }
+
+        section {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 80px 20px;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        h2 {
+            font-family: 'Alex Brush', cursive;
+            font-size: 3.8rem;
+            color: #d4a373;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        p {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        /* Base class untuk efek animasi scroll */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Delay helper classes */
+        .delay-200 { transition-delay: 0.2s; }
+        .delay-400 { transition-delay: 0.4s; }
+        .delay-600 { transition-delay: 0.6s; }
+
+        /* ==========================================================================
+           HALAMAN 1: SAMPUL DEPAN (COVER)
+           ========================================================================== */
+        #hal-1-cover {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.55)), 
+                        url('master-background.png') center/cover no-repeat;
+            z-index: 1000;
+            display: flex;
+            color: #fff;
+            transition: transform 1.3s cubic-bezier(0.77, 0, 0.175, 1), opacity 1.3s ease;
+        }
+
+        .cover-slide-up {
+            transform: translateY(-100vh);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .cover-content {
+            animation: fadeInZoom 1.5s ease-out;
+        }
+
+        .guest-box {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.25);
+            margin: 30px 0;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+        }
+
+        .guest-name {
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: #fff;
+            margin-top: 5px;
+        }
+
+        .btn-open {
+            background-color: #d4a373;
+            color: #fff;
+            padding: 14px 38px;
+            font-size: 1rem;
+            font-weight: 500;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(212, 163, 115, 0.4);
+            transition: all 0.3s ease;
+            animation: pulseBtn 2s infinite;
+        }
+
+        .btn-open:hover {
+            background-color: #fff;
+            color: #d4a373;
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(255, 255, 255, 0.5);
+        }
+
+        @keyframes fadeInZoom {
+            0% { opacity: 0; transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes pulseBtn {
+            0% { transform: scale(1); box-shadow: 0 5px 15px rgba(212, 163, 115, 0.4); }
+            50% { transform: scale(1.03); box-shadow: 0 5px 25px rgba(212, 163, 115, 0.7); }
+            100% { transform: scale(1); box-shadow: 0 5px 15px rgba(212, 163, 115, 0.4); }
+        }
+
+        /* ==========================================================================
+           HALAMAN 2: BACKGROUND VIDEO OPENING
+           ========================================================================== */
+        #hal-2-video {
+            padding: 0;
+            background: #000;
+        }
+
+        .bg-video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+            z-index: 1;
+        }
+
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2;
+        }
+
+        .video-content {
+            position: relative;
+            z-index: 3;
+            color: #fff;
+            opacity: 0;
+            transform: scale(0.75);
+            transition: all 2s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        .video-content.text-masuk {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .video-mempelai {
+            font-family: 'Alex Brush', cursive;
+            font-size: 5.5rem;
+            color: #faedcd;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+            margin: 15px 0;
+        }
+
+        /* ==========================================================================
+           HALAMAN 3: AR-RUM & FOTO SINGLE
+           ========================================================================== */
+        #hal-3-arrum {
+            background: linear-gradient(rgba(255,255,255,0.75), rgba(255,255,255,0.75));
+        }
+
+        .frame-foto-single {
+            width: 260px;
+            height: 260px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 6px solid #d4a373;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            transform: scale(0.8);
+            opacity: 0;
+            transition: all 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .reveal.active .frame-foto-single {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .surat-box {
+            max-width: 650px;
+            padding: 0 15px;
+        }
+
+        .surat-box .arab {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            line-height: 2.2;
+            color: #2b2b2b;
+        }
+
+        /* ==========================================================================
+           HALAMAN 4: PROFIL MEMPELAI (PINK SEMI TRANSPARAN LAYOUT)
+           ========================================================================== */
+        #hal-4-profil {
+            background: transparent;
+        }
+
+        .pink-container {
+            background: rgba(255, 240, 245, 0.82); 
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            width: 88%; /* Menyisakan pinggiran agar background utama tetap terlihat */
+            max-width: 900px;
+            padding: 50px 30px;
+            border-radius: 24px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-items: center;
+            border: 1px solid rgba(255, 192, 203, 0.3);
+        }
+
+        .mempelai-box {
+            flex: 1;
+            min-width: 270px;
+            margin: 20px 10px;
+            opacity: 0;
+            transition: all 1.5s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        /* Animasi khusus dari arah luar (kiri/kanan) */
+        .mempelai-box.slide-kiri { transform: translateX(-60px); }
+        .mempelai-box.slide-kanan { transform: translateX(60px); }
+
+        .reveal.active .mempelai-box {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .foto-mempelai {
+            width: 220px;
+            height: 220px;
+            object-fit: cover;
+            margin-bottom: 20px;
+            transition: transform 0.5s ease;
+        }
+
+        .foto-mempelai:hover {
+            transform: scale(1.05) rotate(2deg);
+        }
+
+        .mempelai-box h3 {
+            font-family: 'Alex Brush', cursive;
+            font-size: 2.8rem;
+            color: #cc8899;
+            margin-bottom: 5px;
+        }
+
+        .mempelai-box .instagram {
+            color: #cc8899;
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 10px;
+            transition: color 0.3s;
+        }
+        .mempelai-box .instagram:hover { color: #aa5577; }
+
+        /* ==========================================================================
+           HALAMAN 5: SAVE THE DATE (COUNTDOWN & MAPS)
+           ========================================================================== */
+        #hal-5-date {
+            background: linear-gradient(rgba(255,255,255,0.6), rgba(255,255,255,0.6));
+        }
+
+        .countdown-container {
+            display: flex;
+            gap: 15px;
+            margin: 35px 0;
+        }
+
+        .countdown-item {
+            background: #d4a373;
+            color: #fff;
+            padding: 15px 20px;
+            border-radius: 12px;
+            min-width: 80px;
+            box-shadow: 0 6px 15px rgba(212, 163, 115, 0.3);
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.8s ease;
+        }
+
+        .reveal.active .countdown-item {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .countdown-item span {
+            display: block;
+            font-size: 2rem;
+            font-weight: 600;
+        }
+
+        .countdown-item label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .maps-box {
+            width: 100%;
+            max-width: 650px;
+            height: 280px;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 6px solid #fff;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            margin-top: 25px;
+        }
+
+        .maps-box iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* ==========================================================================
+           HALAMAN 6: OUR GALLERY (3 GRID ATAS & SLIDER OTOMATIS BAWAH)
+           ========================================================================== */
+        #hal-6-gallery {
+            background: linear-gradient(rgba(255,255,255,0.8), rgba(255,255,255,0.8));
+        }
+
+        .gallery-top {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px;
+            width: 100%;
+            max-width: 650px;
+            margin-bottom: 40px;
+        }
+
+        .gallery-top img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: transform 0.4s;
+        }
+
+        .gallery-top img:hover { transform: translateY(-5px); }
+
+        /* Infinite Smooth Auto Carousel */
+        .slider-container {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            padding: 15px 0;
+        }
+
+        .slider-track {
+            display: flex;
+            width: calc(220px * 8); /* Total lebar 4 foto + 4 duplikat */
+            animation: jalanKiriContinuous 20s linear infinite;
+        }
+
+        .slider-track img {
+            width: 200px;
+            height: 140px;
+            object-fit: cover;
+            margin: 0 10px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+        }
+
+        @keyframes jalanKiriContinuous {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(calc(-220px * 4)); }
+        }
+
+        /* ==========================================================================
+           HALAMAN 6.2: OUR JOURNEY
+           ========================================================================== */
+        #hal-6b-journey {
+            background: linear-gradient(rgba(255,255,255,0.5), rgba(255,255,255,0.5));
+        }
+
+        .timeline {
+            position: relative;
+            max-width: 600px;
+            width: 100%;
+            margin: 30px auto 0;
+            padding-left: 30px;
+            border-left: 2px dashed #d4a373;
+            text-align: left;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 35px;
+            opacity: 0;
+            transform: translateX(-30px);
+            transition: all 1s ease;
+        }
+
+        .reveal.active .timeline-item {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -37px;
+            top: 6px;
+            width: 14px;
+            height: 14px;
+            background: #d4a373;
+            border-radius: 50%;
+            box-shadow: 0 0 0 4px rgba(212, 163, 115, 0.25);
+        }
+
+        .timeline-item h4 {
+            font-size: 1.15rem;
+            color: #d4a373;
+            margin-bottom: 6px;
+        }
+
+        /* ==========================================================================
+           HALAMAN 7: WEDDING GIFT
+           ========================================================================== */
+        #hal-7-gift {
+            background: linear-gradient(rgba(255,255,255,0.8), rgba(255,255,255,0.8));
+        }
+
+        .gift-card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 25px;
+            border-radius: 18px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.04);
+            max-width: 360px;
+            width: 100%;
+            margin: 15px 0;
+            border: 1px solid #faedcd;
+            transition: transform 0.3s;
+        }
+
+        .gift-card:hover { transform: translateY(-3px); }
+
+        .gift-card i {
+            font-size: 2.2rem;
+            color: #d4a373;
+            margin-bottom: 12px;
+        }
+
+        /* ==========================================================================
+           HALAMAN 8: WEDDING WISH (SISTEM KOMENTAR LOCALSTORAGE)
+           ========================================================================== */
+        #hal-8-wish {
+            background: linear-gradient(rgba(255,255,255,0.6), rgba(255,255,255,0.6));
+        }
+
+        .wish-form {
+            width: 100%;
+            max-width: 520px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-bottom: 35px;
+        }
+
+        .wish-form input, .wish-form textarea, .wish-form select {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #e8e4d9;
+            border-radius: 10px;
+            font-family: inherit;
+            outline: none;
+            font-size: 0.9rem;
+            background: rgba(255,255,255,0.9);
+            transition: border-color 0.3s;
+        }
+
+        .wish-form input:focus, .wish-form textarea:focus, .wish-form select:focus {
+            border-color: #d4a373;
+        }
+
+        .wish-form button {
+            background: #d4a373;
+            color: #fff;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(212, 163, 115, 0.3);
+            transition: background 0.3s;
+        }
+
+        .wish-form button:hover { background: #c69363; }
+        
+        .comments-display-box {
+            width: 100%;
+            max-width: 520px;
+            max-height: 280px;
+            overflow-y: auto;
+            background: rgba(255,255,255,0.9);
+            border-radius: 14px;
+            padding: 20px;
+            text-align: left;
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .comment-item {
+            border-bottom: 1px solid #f4f1ea;
+            padding: 12px 0;
+        }
+
+        .comment-item:last-child { border: none; }
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            margin-bottom: 6px;
+        }
+
+        .comment-name { font-weight: 600; color: #333; }
+        .comment-status {
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .status-hadir { background: #3d9a62; }
+        .status-ragu { background: #d7a916; }
+        .status-absen { background: #d90a11; }
+        .comment-text { font-size: 0.9rem; color: #555; }
+
+        /* ==========================================================================
+           HALAMAN 9: CLOSING & UCAPAN TERIMA KASIH
+           ========================================================================== */
+        #hal-9-closing {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
+                        url('master-background.png') center/cover no-repeat;
+            color: #fff;
+        }
+
+        #hal-9-closing h2 { color: #faedcd; }
+
+        /* Floating Audio Control Button */
+        #music-control {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 48px;
+            height: 48px;
+            background: rgba(212, 163, 115, 0.95);
+            color: #fff;
+            border-radius: 50%;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 999;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            transition: transform 0.3s;
+        }
+
+        #music-control:hover { transform: scale(1.08); }
+        .rotate-music { animation: putarIcon 4s linear infinite; }
+
+        @keyframes putarIcon {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* ==========================================================================
+           MOBILE RESPONSIVE ADJUSTMENTS
+           ========================================================================== */
+        @media (max-width: 768px) {
+            h2 { font-size: 3rem; }
+            .video-mempelai { font-size: 3.8rem; }
+            .pink-container { width: 92%; padding: 35px 15px; }
+            .foto-mempelai { width: 180px; height: 180px; }
+            .mempelai-box h3 { font-size: 2.3rem; }
+            .countdown-container { gap: 10px; }
+            .countdown-item { min-width: 68px; padding: 12px 10px; }
+            .countdown-item span { font-size: 1.6rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- BACKEND AUDIO UTAMA -->
+    <audio id="wedding-audio" loop>
+        <source src="musik.mp3" type="audio/mp3">
+    </audio>
+    <div id="music-control" onclick="toggleAudio()"><i id="music-icon" class="fas fa-music"></i></div>
+
+    <!-- ==========================================================================
+       HALAMAN 1: COVER SCREEN
+       ========================================================================== -->
+    <div id="hal-1-cover">
+        <section class="cover-content">
+            <p style="text-transform: uppercase; letter-spacing: 4px; font-size: 0.9rem;">The Wedding Of</p>
+            <h1 style="font-family: 'Alex Brush', cursive; font-size: 4.8rem; color: #faedcd; margin: 15px 0; text-shadow: 2px 2px 6px rgba(0,0,0,0.3);">Elyana & Syahril</h1>
+            <div class="guest-box">
+                <p>Kepada Yth. Bapak/Ibu/Saudara/i:</p>
+                <div class="guest-name" id="nama-tamu-url">Nama Tamu</div>
+            </div>
+            <button class="btn-open" onclick="bukaUndanganAksi()">
+                <i class="fas fa-envelope-open-text" style="margin-right: 8px;"></i> Buka Undangan
+            </button>
+        </section>
+    </div>
+
+    <!-- ==========================================================================
+       HALAMAN 2: CINEMATIC BACKGROUND VIDEO
+       ========================================================================== -->
+    <section id="hal-2-video">
+        <video id="cinematic-video" class="bg-video" muted playsinline>
+            <source src="background-opening.mp4" type="video/mp4">
+        </video>
+        <div class="video-overlay"></div>
+        <div class="video-content" id="video-text-container">
+            <p style="text-transform: uppercase; letter-spacing: 3px;">Pernikahan Agung</p>
+            <h1 class="video-mempelai">Elyana & Syahril</h1>
+            <p style="letter-spacing: 3px; font-weight: 300;">31 DESEMBER 2026</p>
+        </div>
+    </section>
+
+    <!-- ==========================================================================
+       HALAMAN 3: AR-RUM
+       ========================================================================== -->
+    <section id="hal-3-arrum" class="reveal">
+        <img class="frame-foto-single" src="foto-halaman3.png" alt="Prewedding">
+        <div class="surat-box">
+            <div class="arab" style="font-family: serif; font-weight: bold;">وَمِنْ اٰيٰتِهٖٓ اَنْ خَلَقَ Lَكُمْ مِّنْ اَنْفُسِكُمْ اَزْوَاجًا Lِّتَسْكُنُوْٓا اِلَيْهَا وَجَعَلَ بَيْنَكُمْ مَّوَدَّةً وَّرَحْمَةً ۗاِنَّ فِيْ ذٰلِكَ Lَاٰيٰتٍ Lِّقَوْمٍ يَّتَفَكَّرُوْنَ</div>
+            <p>"Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sungguh, pada yang demikian itu benar-benar terdapat tanda-tanda bagi kaum yang berpikir."</p>
+            <strong style="color: #d4a373; font-size: 0.95rem;">(QS. Ar-Rum: 21)</strong>
+        </div>
+    </section>
+
+    <!-- ==========================================================================
+       HALAMAN 4: PROFIL MEMPELAI
+       ========================================================================== -->
+    <section id="hal-4-profil" class="reveal">
+        <div class="pink-container">
+            <!-- Wanita -->
+            <div class="mempelai-box slide-kiri">
+                <img class="foto-mempelai" src="foto-putri.png" alt="Mempelai Wanita">
+                <h3>Elyana Putri</h3>
+                <p style="font-weight: 500; margin-bottom: 5px;">Putri dari:</p>
+                <p>Bapak Sofia & Ibu Aminah</p>
+                <a href="#" class="instagram"><i class="fab fa-instagram"></i> @elyanaputri</a>
+            </div>
+
+            <div style="font-family: 'Alex Brush', cursive; font-size: 3.5rem; color: #cc8899; margin: 20px 0;">&</div>
+
+            <!-- Pria -->
+            <div class="mempelai-box slide-kanan">
+                <img class="foto-mempelai" src="foto-putra.png" alt="Mempelai Pria">
+                <h3>Syahril Pratama</h3>
+                <p style="font-weight: 500; margin-bottom: 5px;">Putra dari:</p>
+                <p>Bapak Bambang & Ibu Sri</p>
+                <a href="#" class="instagram"><i class="fab fa-instagram"></i> @syahril_pratama</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================================================
+       HALAMAN 5: SAVE THE DATE (COUNTDOWN & MAPS)
+       ========================================================================== -->
+    <section id="hal-5-date" class="reveal">
+        <h2>Save The Date</h2>
+        <p>Dengan memohon rahmat Allah SWT, kami mengundang Anda menghadiri pernikahan kami pada:</p>
+        
+        <div class="countdown-container">
+            <div class="countdown-item delay-200"><span id="days">00</span><label>Hari</label></div>
+            <div class="countdown-item delay-400"><span id="hours">00</span><label>Jam</label></div>
+            <div class="countdown-item delay-600"><span id="minutes">00</span><label>Menit</label></div>
+            <div class="countdown-item" style="transition-delay: 0.8s;"><span id="seconds">00</span><label>Detik</label></div>
+        </div>
+
+        <div style="margin: 20px 0;">
+            <p><strong><i class="far fa-calendar-alt" style="color: #d4a373;"></i> Minggu, 31 Desember 2026</strong></p>
+            <p><i class="fas fa-map-marker-alt" style="color: #d4a373;"></i> Gedung Pernikahan Utama, Jl. Raya Alun-Alun No. 1</p>
+        </div>
+
+        <div class="maps-box">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3957.5681144075196!2d111.4443912!3d-7.4022131!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e79eb7038bc4039%3A0x7df6ec694726fb51!2sAlun-Alun%20Ngawi!5e0!3m2!1sid!2sid!4v1700000000000" allowfullscreen="" loading="lazy"></iframe>
+        </div>
+    </section>
+
+    <!-- ==========================================================================
+       HALAMAN 6: GALLERY (3 GRID + SLIDER BERGERAK)
+       ========================================================================== -->
+    <section id="hal-6-gallery" class="reveal">
+        <h2>Our Gallery</h2>
+        <p style="margin-bottom: 30px;">Sekilas Galeri Kebahagiaan Kami</p>
+
+        <!-- 3 Foto Atas -->
+        <div class="gallery-top">
+            <img src="foto-halaman3.png" alt="Galeri 1" style="animation: fadeInZoom 1s ease-out;">
+            <img src="foto-putri.png" alt="Galeri 2" style="animation: fadeInZoom 1.2s ease-out;">
+            <img src="foto-putra.png" alt="Galeri 3" style="animation: fadeInZoom 1.4s ease-out;">
+        </div>
+
+        <!-- Continuous Slider Bawah (4 Foto Utama + 4 Duplikat untuk Infinite Loop) -->
+        <div class="slider-container">
+            <div class="slider-track">
+                <img src="foto-halaman3.png" alt="Slide 1">
+                <img src="foto-putri.png" alt="Slide 2">
+                <img src="foto-putra.png" alt="Slide 3">
+                <img src="foto-halaman3.png" alt="Slide 4">
+                
+                <!-- Loop Duplikat Seamless -->
+                <img src="foto-halaman3.png" alt="Slide 1">
+                <img src="foto-putri.png" alt="Slide 2">
+                <img src="foto-putra.png" alt="Slide 3">
+                <img src="foto-halaman3.png" alt="Slide 4">
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================================================
+       HALAMAN 6.2: OUR JOURNEY
+       ========================================================================== -->
+    <section id="hal-6b-journey" class="reveal">
+        <h2>Our Journey</h2>
+        <p>Perjalanan cinta yang mempertemukan dua hati</p>
+
+        <div class="timeline">
+            <div class="timeline-item delay-200">
+                <h4>2023 - Awal Pertemuan</h4>
+                <p>Takdir mempertemukan kami secara tidak sengaja dalam sebuah proyek kerja yang sama.</p>
+            </div>
+            <div class="timeline-item delay-400">
+                <h4>2025 - Langkah Komitmen</h4>
+                <p>Merasakan keselarasan visi hidup, kami memutuskan untuk menggelar acara lamaran resmi keluarga.</p>
+            </div>
+            <div class="timeline-item delay-600">
+                <h4>2026 - Menuju Ikatan Suci</h4>
+                <p>Hari ini, komitmen tersebut resmi kami kukuhkan lewat ikatan akad nikah yang sakral.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================================================
+       HALAMAN 7: WEDDING GIFT
+       ========================================================================== -->
+    <section id="hal-7-gift" class="reveal">
+        <h2>Wedding Gift</h2>
+        <p>Doa restu Anda adalah berkah terindah. Namun jika ingin memberikan tanda kasih cashless, dapat melalui:</p>
+        
+        <div class="gift-card">
+            <i class="fas fa-credit-card"></i>
+            <h4>Bank BCA</h4>
+            <p style="font-weight: 600; font-size: 1.15rem; margin: 6px 0; letter-spacing: 1px;">7712345678</p>
+            <p style="font-size: 0.85rem; opacity: 0.8;">a.n. Elyana Putri</p>
+        </div>
+
+        <div class="gift-card">
+            <i class="fas fa-wallet"></i>
+            <h4>E-Wallet DANA</h4>
+            <p style="font-weight: 600; font-size: 1.15rem; margin: 6px 0; letter-spacing: 1px;">081234567890</p>
+            <p style="font-size: 0.85rem; opacity: 0.8;">a.n. Syahril Pratama</p>
+        </div>
+    </section>
+
+    <!-- ==========================================================================
+       HALAMAN 8: WEDDING WISH (REALTIME LOGIC)
+       ========================================================================== -->
+    <section id="hal-8-wish" class="reveal">
+        <h2>Wedding Wish</h2>
+        <p>Goresan doa dan ucapan selamat dari para tamu kehormatan</p>
+
+        <form class="wish-form" id="form-ucapan" onsubmit="prosesKirimPesan(event)">
+            <input type="text" id="input-nama" placeholder="Nama Lengkap" required>
+            <textarea id="input-pesan" rows="3" placeholder="Tulis ungkapan doa & ucapan selamat..." required></textarea>
+            <select id="input-konfirmasi" required>
+                <option value="">-- Konfirmasi Kehadiran --</option>
+                <option value="Hadir">Insya Allah Hadir</option>
+                <option value="Ragu-ragu">Masih Ragu</option>
+                <option value="Tidak Hadir">Berhalangan Hadir</option>
+            </select>
+            <button type="submit"><i class="far fa-paper-plane"></i> Kirim Ucapan Restu</button>
+        </form>
+
+        <div class="comments-display-box" id="kotak-komentar">
+            <!-- Diproduksi otomatis oleh JS -->
+        </div>
+    </section>
+
+    <!-- ==========================================================================
+       HALAMAN 9: CLOSING & TERIMA KASIH
+       ========================================================================== -->
+    <section id="hal-9-closing">
+        <div class="reveal">
+            <p>Merupakan suatu kehormatan dan kebahagiaan yang mendalam bagi kami,<br>apabila Bapak/Ibu/Saudara/i berkenan hadir memberikan doa restu.</p>
+            <h2 style="margin: 25px 0;">Terima Kasih</h2>
+            <p style="font-size: 1.3rem; font-family: 'Alex Brush', cursive; color: #faedcd;">Kami Yang Berbahagia,</p>
+            <h3 style="font-weight: 400; letter-spacing: 1px;">Elyana & Syahril</h3>
+        </div>
+    </section>
+
+
+    <!-- ==========================================================================
+       JASCRIPT ENGINE CONTROLLER
+       ========================================================================== -->
+    <script>
+        const audio = document.getElementById('wedding-audio');
+        const video = document.getElementById('cinematic-video');
+        const textVideo = document.getElementById('video-text-container');
+        const musicIcon = document.getElementById('music-icon');
+        const musicBtn = document.getElementById('music-control');
+
+        // 1. Parsing Nama Tamu dari parameter URL secara otomatis (?to=Nama+Tamu)
+        const queryParams = new URLSearchParams(window.location.search);
+        const namaTamu = queryParams.get('to');
+        if(namaTamu) {
+            document.getElementById('nama-tamu-url').innerText = namaTamu;
+            document.getElementById('input-nama').value = namaTamu;
+        }
+
+        // 2. Fungsi Utama Pembukaan Undangan & Autoplay Mekanisme
+        function bukaUndanganAksi() {
+            document.getElementById('hal-1-cover').classList.add('cover-slide-up');
+            document.body.style.overflow = 'auto'; // Mengizinkan scrolling halaman utama
+            musicBtn.style.display = 'flex';
+            musicIcon.classList.add('rotate-music');
+            
+            // Eksekusi Pemutaran Musik Lokal
+            audio.play().catch(err => console.log("Autoplay music diblokir sistem browser"));
+            
+            // Setel ulang & Mainkan video background opening
+            video.currentTime = 0;
+            video.play();
+        }
+
+        // Playback Handler Musik Mandiri via Floating Action Button
+        function toggleAudio() {
+            if (audio.paused) {
+                audio.play();
+                musicIcon.classList.add('rotate-music');
+            } else {
+                audio.pause();
+                musicIcon.classList.remove('rotate-music');
+            }
+        }
+
+        // 3. Kontrol Temporal Durasi Video Menggunakan Event Listener Native
+        video.addEventListener('timeupdate', function() {
+            // Ketika sisa durasi pemutaran video kurang dari atau sama dengan 3 detik, picu animasi teks masuk
+            if (video.duration - video.currentTime <= 3) {
+                textVideo.classList.add('text-masuk');
+            }
+        });
+
+        video.addEventListener('ended', function() {
+            // Menghentikan perulangan video secara paksa agar berhenti di frame penutup paling akhir
+            video.pause();
+        });
+
+
+        // 4. Implementasi Intersection Observer API untuk Otomatisasi Animasi Berbasis Scroll
+        const observerOptions = {
+            root: null,
+            threshold: 0.15 // Elemen terpicu bergerak jika 15% areanya masuk dalam viewport screen
+        };
+
+        const scrollObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        // Mendaftarkan semua section dengan class .reveal ke engine observer
+        document.querySelectorAll('.reveal').forEach(section => {
+            scrollObserver.observe(section);
+        });
+
+
+        // 5. Algoritma Perhitungan Presisi Countdown Waktu (Halaman 5)
+        const targetDate = new Date("Dec 31, 2026 08:00:00").getTime();
+
+        setInterval(function() {
+            const now = new Date().getTime();
+            const difference = targetDate - now;
+
+            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerText = days < 10 ? "0" + days : days;
+            document.getElementById("hours").innerText = hours < 10 ? "0" + hours : hours;
+            document.getElementById("minutes").innerText = minutes < 10 ? "0" + minutes : minutes;
+            document.getElementById("seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
+        }, 1000);
+
+
+        // 6. Manajemen Engine Komentar Pengunjung (Wedding Wish) Berbasis LocalStorage
+        window.addEventListener('DOMContentLoaded', () => {
+            renderDaftarKomentar();
+        });
+
+        function prosesKirimPesan(event) {
+            event.preventDefault();
+            const nama = document.getElementById('input-nama').value;
+            const pesan = document.getElementById('input-pesan').value;
+            const konfirmasi = document.getElementById('input-konfirmasi').value;
+
+            const payloadPesan = { nama, pesan, konfirmasi };
+
+            let databaseLokal = JSON.parse(localStorage.getItem('wedding_wishes_db')) || [];
+            databaseLokal.unshift(payloadPesan); // Menyisipkan komentar baru di urutan teratas array
+
+            localStorage.setItem('wedding_wishes_db', JSON.stringify(databaseLokal));
+            
+            // Reset input field pesan & dropdown konfirmasi, lalu render ulang komponen list box
+            document.getElementById('input-pesan').value = '';
+            document.getElementById('input-konfirmasi').value = '';
+            renderDaftarKomentar();
+        }
+
+        function renderDaftarKomentar() {
+            const displayContainer = document.getElementById('kotak-komentar');
+            let dataUcapan = JSON.parse(localStorage.getItem('wedding_wishes_db')) || [];
+            
+            // Setup dummy data inisial apabila memori penyimpanan lokal browser terdeteksi kosong
+            if(dataUcapan.length === 0) {
+                dataUcapan = [
+                    {nama: "Budi Santoso", pesan: "Selamat menempuh hidup baru untuk kedua mempelai! Semoga senantiasa sakinah, mawaddah, warahmah.", konfirmasi: "Hadir"},
+                    {nama: "Siti Rahma", pesan: "Barakallahulakum, semoga lancar dan khidmat acaranya sampai hari H yaa kak!", konfirmasi: "Ragu-ragu"}
+                ];
+                localStorage.setItem('wedding_wishes_db', JSON.stringify(dataUcapan));
+            }
+
+            displayContainer.innerHTML = '';
+            dataUcapan.forEach(item => {
+                let badgeStyle = 'status-hadir';
+                if(item.konfirmasi === 'Ragu-ragu') badgeStyle = 'status-ragu';
+                if(item.konfirmasi === 'Tidak Hadir') badgeStyle = 'status-absen';
+
+                const rawDOM = `
+                    <div class="comment-item">
+                        <div class="comment-header">
+                            <span class="comment-name">${item.nama}</span>
+                            <span class="comment-status ${badgeStyle}">${item.konfirmasi}</span>
+                        </div>
+                        <div class="comment-text">${item.pesan}</div>
+                    </div>
+                `;
+                displayContainer.innerHTML += rawDOM;
+            });
+        }
+    </script>
+</body>
+</html>
