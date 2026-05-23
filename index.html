@@ -204,7 +204,7 @@
         }
 
         /* ==========================================================================
-           HALAMAN 2: FIX ANTI BLANK HITAM (HYBRID BACKUP LAYER)
+           HALAMAN 2: RADICAL ANTI-BLANK LAYER (DYNAMIC INJECTION)
            ========================================================================== */
         #hal-2-video {
             position: relative;
@@ -212,7 +212,7 @@
             height: 100vh;
             min-height: 100vh;
             padding: 0;
-            /* Gambar cadangan langsung terpasang di base layer CSS halaman 2 */
+            /* Default base layer adalah GAMBAR UTAMA, jadi mustahil blank hitam */
             background-image: url('foto-halaman3.png'); 
             background-position: center;
             background-size: cover;
@@ -232,6 +232,12 @@
             object-fit: cover;
             z-index: 1;
             display: block;
+            opacity: 0; /* Default disembunyikan, baru muncul lewat JS jika sukses jalan */
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .bg-video.video-ready {
+            opacity: 1; /* Hanya muncul kalau video dipastikan sukses berputar */
         }
 
         .video-overlay {
@@ -248,10 +254,7 @@
             position: relative;
             z-index: 3;
             color: #fff;
-            /* Perubahan Penting: Default teks langsung muncul (opacity: 1) agar jika video block, teks tidak hilang */
             opacity: 1; 
-            transform: scale(1);
-            transition: all 1s ease-in-out;
             padding: 20px;
         }
 
@@ -697,13 +700,9 @@
     </div>
 
     <!-- ==========================================================================
-       HALAMAN 2: CINEMATIC BACKGROUND VIDEO WITH SAFE CSS HYBRID
+       HALAMAN 2: CINEMATIC DYNAMIC SECTION (TIDAK ADA TAG VIDEO MANUAL DI SINI)
        ========================================================================== */ -->
     <section id="hal-2-video">
-        <!-- Menggunakan fallback poster langsung di tag video -->
-        <video id="cinematic-video" class="bg-video" loop muted playsinline autoplay preload="auto" poster="foto-halaman3.png">
-            <source src="opening-background.mp4" type="video/mp4">
-        </video>
         <div class="video-overlay"></div>
         <div class="video-content" id="video-text-container">
             <p style="text-transform: uppercase; letter-spacing: 3px;">Pernikahan Agung</p>
@@ -718,7 +717,7 @@
     <section id="hal-3-arrum" class="reveal">
         <img class="foto-asli-halaman3" src="foto-halaman3.png" alt="Prewedding Scene">
         <div class="surat-box">
-            <div class="arab" style="font-family: serif; font-weight: bold;">وَمِنْ اٰيٰتِهٖٓ اَنْ خَلَقَ لَكُمْ mِّنْ اَنْفُسِكُمْ اَزْوَاجًا لِّتَسْكُنُوْٓا اِلَيْهَا وَجَعَلَ بَيْنَتُكُمْ مَّوَدَّةً وَّرَحْمَةً ۗاِنَّ فِيْ ذٰلِكَ لَاٰيٰتٍ لِّقَوْمٍ يَّتَفَكَّرُوْنَ</div>
+            <div class="arab" style="font-family: serif; font-weight: bold;">وَمِنْ اٰيٰتِهٖٓ اَنْ خَلَقَ لَكُمْ مِّنْ اَنْفُسِكُمْ اَزْوَاجًا لِّتَسْكُنُوْٓا اِلَيْهَا وَجَعَلَ بَيْنَتُكُمْ مَّوَدَّةً وَّرَحْمَةً ۗاِنَّ فِيْ ذٰلِكَ لَاٰيٰتٍ لِّقَوْمٍ يَّتَفَكَّرُوْنَ</div>
             <p>"Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sungguh, pada yang demikian itu benar-benar terdapat tanda-tanda bagi kaum yang berpikir."</p>
             <strong style="color: #d4a373; font-size: 0.95rem;">(QS. Ar-Rum: 21)</strong>
         </div>
@@ -888,9 +887,9 @@
        ========================================================================== -->
     <script>
         const audio = document.getElementById('wedding-audio');
-        const video = document.getElementById('cinematic-video');
         const musicIcon = document.getElementById('music-icon');
         const musicBtn = document.getElementById('music-control');
+        const hal2Section = document.getElementById('hal-2-video');
 
         // Parameter Tamu URL Parsing (?to=Nama+Tamu)
         const queryParams = new URLSearchParams(window.location.search);
@@ -900,7 +899,7 @@
             document.getElementById('input-nama').value = namaTamu;
         }
 
-        // Aksi Buka Undangan & Pemutaran Video/Audio Paksa (Mengatasi Bug Mobile)
+        // Aksi Buka Undangan & Dynamic Injection System
         function bukaUndanganAksi() {
             document.getElementById('hal-1-cover').classList.add('cover-slide-up');
             document.body.style.overflow = 'auto'; 
@@ -908,16 +907,48 @@
             musicIcon.classList.add('rotate-music');
             
             // Putar musik utama
-            audio.play().catch(err => console.log("Audio playback ditahan browser"));
+            audio.play().catch(err => console.log("Audio ditahan browser"));
             
-            // Trigger Pemutaran Video Secara Aman Tanpa Manipulasi Reload yang dibenci Browser Mobile
-            if (video) {
-                video.play().catch(error => {
-                    console.log("Autoplay video diblokir hardware HP. Sistem mengaktifkan fallback CSS Image.");
-                    // Sembunyikan elemen video yang rusak/blank agar murni menampilkan background foto-halaman3.png
-                    video.style.display = 'none'; 
-                });
-            }
+            // STRATEGI BARU: Inject video via JS agar tidak merusak rendering halaman
+            const dynamicVideo = document.createElement('video');
+            dynamicVideo.className = 'bg-video';
+            dynamicVideo.loop = true;
+            dynamicVideo.muted = true;
+            dynamicVideo.style.pointerEvents = 'none';
+            dynamicVideo.setAttribute('playsinline', '');
+            dynamicVideo.setAttribute('autoplay', '');
+            dynamicVideo.preload = 'auto';
+            
+            const videoSource = document.createElement('source');
+            videoSource.src = 'opening-background.mp4';
+            videoSource.type = 'video/mp4';
+            dynamicVideo.appendChild(videoSource);
+            
+            // Masukkan ke DOM paling depan di Halaman 2
+            hal2Section.insertBefore(dynamicVideo, hal2Section.firstChild);
+            
+            // Deteksi Real-Time apakah video benar-benar "bernyawa" (bukan frame hitam statis)
+            let videoDarahSehat = false;
+            
+            dynamicVideo.addEventListener('playing', () => {
+                // Beri jeda 150ms untuk memastikan decoding hardware selesai tanpa freeze
+                setTimeout(() => {
+                    if (dynamicVideo.currentTime > 0 && !dynamicVideo.paused) {
+                        videoDarahSehat = true;
+                        dynamicVideo.classList.add('video-ready'); // Tampilkan video (fade-in)
+                        console.log("Video berhasil dirender sempurna oleh Perangkat HP.");
+                    }
+                }, 150);
+            });
+
+            // Pengaman Waktu (Safety Timeout): Jika dalam 1.2 detik video gagal/ngadat/stuck hitam,
+            // Hancurkan objek video dan paksa halaman menggunakan base layer image secara murni.
+            setTimeout(() => {
+                if (!videoDarahSehat) {
+                    console.log("Sistem mendeteksi video macet/hitam. Menghapus objek video.");
+                    dynamicVideo.remove(); // Hapus video total dari memori DOM HP
+                }
+            }, 1200);
         }
 
         function toggleAudio() {
