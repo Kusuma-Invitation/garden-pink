@@ -13,7 +13,7 @@
 
     <style>
         /* ==========================================================================
-           1. GLOBAL STYLES & BACKGROUND CONFIGURATION
+           1. GLOBAL STYLES & BACKGROUND FIX (ANTI-ZOOM & FIXED PARALLAX)
            ========================================================================== */
         * {
             margin: 0;
@@ -23,17 +23,23 @@
         
         body {
             font-family: 'Poppins', sans-serif;
-            background: url('master-background.png') center top/cover no-repeat fixed;
+            /* Mengunci latar belakang agar benar-benar diam saat di-scroll (fixed) */
+            background-image: url('master-background.png');
+            background-position: center top;
+            background-repeat: repeat-y;
+            background-attachment: fixed;
+            background-size: 100% auto; /* Mencegah gambar terpotong/zoom paksa di mobile */
             color: #4a4a4a;
             overflow: hidden; /* Dikunci sebelum klik Buka Undangan */
             scroll-behavior: smooth;
         }
 
-        /* Optimasi Desktop / PC agar background utama tidak mengalami zoom berlebih */
+        /* Optimasi Desktop / PC: Memastikan background proporsional tanpa zoom besar-besaran */
         @media (min-width: 1024px) {
             body {
                 background-size: contain;
                 background-repeat: repeat;
+                background-attachment: fixed;
                 background-position: center top;
             }
         }
@@ -81,7 +87,7 @@
         .delay-600 { transition-delay: 0.6s; }
 
         /* ==========================================================================
-           HALAMAN 1: COVER SCREEN (BACKGROUND FOTO MEMPELAI)
+           HALAMAN 1: COVER SCREEN (BACKGROUND FOTO MEMPELAI SPLIT)
            ========================================================================== */
         #hal-1-cover {
             position: fixed;
@@ -98,7 +104,6 @@
             overflow: hidden;
         }
 
-        /* Split background foto mempelai untuk cover */
         .cover-bg-split {
             position: absolute;
             top: 0;
@@ -201,7 +206,7 @@
         }
 
         /* ==========================================================================
-           HALAMAN 2: CINEMATIC VIDEO OPENING (FIXED BLANK SCREEN)
+           HALAMAN 2: CINEMATIC VIDEO OPENING
            ========================================================================== */
         #hal-2-video {
             padding: 0;
@@ -252,7 +257,7 @@
         }
 
         /* ==========================================================================
-           HALAMAN 3: AR-RUM & FOTO ASLI TANPA BINGKAI
+           HALAMAN 3: AR-RUM (FOTO NATURAL APA ADANYA)
            ========================================================================== */
         #hal-3-arrum {
             background: linear-gradient(rgba(255,255,255,0.75), rgba(255,255,255,0.75));
@@ -287,7 +292,7 @@
         }
 
         /* ==========================================================================
-           HALAMAN 4: PROFIL MEMPELAI (FOTO ASLI TANPA BINGKAI)
+           HALAMAN 4: PROFIL MEMPELAI (FOTO NATURAL APA ADANYA)
            ========================================================================== */
         #hal-4-profil {
             background: transparent;
@@ -410,7 +415,7 @@
         }
 
         /* ==========================================================================
-           HALAMAN 6: GALLERY & SLIDER INDEPENDEN
+           HALAMAN 6: GALLERY & CONTINUOUS AUTOMATIC SLIDER
            ========================================================================== */
         #hal-6-gallery {
             background: linear-gradient(rgba(255,255,255,0.8), rgba(255,255,255,0.8));
@@ -658,7 +663,7 @@
     <div id="music-control" onclick="toggleAudio()"><i id="music-icon" class="fas fa-music"></i></div>
 
     <!-- ==========================================================================
-       HALAMAN 1: COVER SCREEN (BACKGROUND MEMPELAI BRIDE & GROOM)
+       HALAMAN 1: COVER SCREEN
        ========================================================================== */ -->
     <div id="hal-1-cover">
         <div class="cover-bg-split">
@@ -696,19 +701,19 @@
     </section>
 
     <!-- ==========================================================================
-       HALAMAN 3: AR-RUM (FOTO ALAMI TANPA BINGKAI)
+       HALAMAN 3: AR-RUM (FOTO NATURAL APA ADANYA)
        ========================================================================== */ -->
     <section id="hal-3-arrum" class="reveal">
         <img class="foto-asli-halaman3" src="foto-halaman3.png" alt="Prewedding Scene">
         <div class="surat-box">
-            <div class="arab" style="font-family: serif; font-weight: bold;">وَمِنْ اٰيٰتِهٖٓ اَنْ خَلَقَ لَكُمْ مِّنْ اَنْفُسِكُمْ اَzْوَاجًا لِّتَسْكُنُوْٓا اِلَيْهَا وَجَعَلَ بَيْنَتُكُمْ مَّوَدَّةً وَّرَحْمَةً ۗاِنَّ فِيْ ذٰلِكَ لَاٰيٰتٍ لِّقَوْمٍ يَّتَفَكَّرُوْنَ</div>
+            <div class="arab" style="font-family: serif; font-weight: bold;">وَمِنْ اٰيٰتِهٖٓ اَنْ خَلَقَ لَكُمْ مِّنْ اَنْفُسِكُمْ اَzْوَاجًا لِّتَسْكُنُوْٓا اِلَيْهَا وَجَعَلَ بَيْنَتُكُمْ mَّوَدَّةً وَّرَحْمَةً ۗاِنَّ فِيْ ذٰلِكَ لَاٰيٰتٍ لِّقَوْمٍ يَّتَفَكَّرُوْنَ</div>
             <p>"Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sungguh, pada yang demikian itu benar-benar terdapat tanda-tanda bagi kaum yang berpikir."</p>
             <strong style="color: #d4a373; font-size: 0.95rem;">(QS. Ar-Rum: 21)</strong>
         </div>
     </section>
 
     <!-- ==========================================================================
-       HALAMAN 4: PROFIL MEMPELAI (FOTO ALAMI TANPA BINGKAI)
+       HALAMAN 4: PROFIL MEMPELAI (FOTO NATURAL APA ADANYA)
        ========================================================================== */ -->
     <section id="hal-4-profil" class="reveal">
         <div class="pink-container">
@@ -891,11 +896,10 @@
             musicBtn.style.display = 'flex';
             musicIcon.classList.add('rotate-music');
             
-            // Putar audio & video secara bersamaan setelah interaksi user (klik) untuk bypass policy browser
             audio.play().catch(err => console.log("Audio playback ditahan browser"));
             
             if (video) {
-                video.muted = true; // Tetap muted agar tidak crash di mobile browser
+                video.muted = true;
                 video.currentTime = 0;
                 let playPromise = video.play();
                 if (playPromise !== undefined) {
