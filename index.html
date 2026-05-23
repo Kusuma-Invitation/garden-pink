@@ -204,11 +204,16 @@
         }
 
         /* ==========================================================================
-           HALAMAN 2: CINEMATIC VIDEO OPENING (FORCE LAYER)
+           HALAMAN 2: CINEMATIC VIDEO OPENING (FIX FOR MOBILE VIDEO BLANK)
            ========================================================================== */
         #hal-2-video {
+            position: relative;
+            width: 100%;
+            height: 100vh; /* Paksa tinggi penuh layar */
+            min-height: 100vh;
             padding: 0;
-            background: #000;
+            background: #000; /* Warna dasar hitam jika video sedang memuat */
+            overflow: hidden;
             z-index: 5; /* Memastikan berada di atas background master agar tidak transparan */
         }
 
@@ -218,9 +223,12 @@
             left: 50%;
             width: 100%;
             height: 100%;
+            min-width: 100%;
+            min-height: 100%;
             transform: translate(-50%, -50%);
-            object-fit: cover;
+            object-fit: cover; /* Memastikan video memenuhi seluruh area layar */
             z-index: 1;
+            display: block;
         }
 
         .video-overlay {
@@ -692,9 +700,9 @@
        HALAMAN 2: CINEMATIC BACKGROUND VIDEO
        ========================================================================== */ -->
     <section id="hal-2-video">
-        <!-- Atribut ditambahkan lengkap demi kompatibilitas browser mobile -->
+        <!-- Menggunakan nama file opening-background.mp4 -->
         <video id="cinematic-video" class="bg-video" loop muted playsinline autoplay preload="auto">
-            <source src="background-opening.mp4" type="video/mp4">
+            <source src="opening-background.mp4" type="video/mp4">
         </video>
         <div class="video-overlay"></div>
         <div class="video-content" id="video-text-container">
@@ -710,7 +718,7 @@
     <section id="hal-3-arrum" class="reveal">
         <img class="foto-asli-halaman3" src="foto-halaman3.png" alt="Prewedding Scene">
         <div class="surat-box">
-            <div class="arab" style="font-family: serif; font-weight: bold;">وَمِنْ اٰيٰتِهٖٓ اَنْ خَلَقَ لَكُمْ mِّنْ اَنْفُسِكُمْ اَzْوَاجًا Lِّتَسْكُنُوْٓا اِلَيْهَا وَجَعَلَ بَيْنَتُكُمْ mَّوَدَّةً وَّرَحْمَةً ۗاِنَّ فِيْ ذٰلِكَ لَاٰيٰتٍ Lِّقَوْmٍ يَّتَفَكَّرُوْنَ</div>
+            <div class="arab" style="font-family: serif; font-weight: bold;">وَمِنْ اٰيٰتِهٖٓ اَنْ خَلَقَ لَكُمْ مِّنْ اَنْفُسِكُمْ اَزْوَاجًا لِّتَسْكُنُوْٓا اِلَيْهَا وَجَعَلَ بَيْنَتُكُمْ مَّوَدَّةً وَّرَحْمَةً ۗاِنَّ فِيْ ذٰلِكَ لَاٰيٰتٍ لِّقَوْمٍ يَّتَفَكَّرُوْنَ</div>
             <p>"Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sungguh, pada yang demikian itu benar-benar terdapat tanda-tanda bagi kaum yang berpikir."</p>
             <strong style="color: #d4a373; font-size: 0.95rem;">(QS. Ar-Rum: 21)</strong>
         </div>
@@ -907,7 +915,7 @@
             if (video) {
                 video.removeAttribute('muted'); // Hapus atribut muting sementara untuk re-trigger
                 video.muted = true;             // Set kembali ke true agar bypass aturan browser mobile
-                video.load();                   // Muat ulang source file video
+                video.load();                   // Memuat ulang file opening-background.mp4
                 
                 let playPromise = video.play();
                 if (playPromise !== undefined) {
